@@ -8,12 +8,12 @@ import json
 #mask：感兴趣区域
 # manual: ground truth
 
-class DriveDataset(Dataset):
+class PDBDataset(Dataset):
     def __init__(self, root: str, train: bool, partition_idx: int, transforms=None):
         # root：指向DRIVE数据集所在的根目录
         # train：bool类型，如果传入为true的话，那么就会载入training下的数据，如果为false的话，就会载如test下的数据
         # transforms：定义的数据的预处理方式
-        super(DriveDataset, self).__init__()
+        super(PDBDataset, self).__init__()
         #self.flag = "training" if train else "test"
         self.partition_file = os.path.join(root, 'partition.json')
         if train:
