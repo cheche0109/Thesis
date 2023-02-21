@@ -6,7 +6,7 @@ from torchvision import transforms
 import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
-from my_dataset import DriveDataset
+from my_dataset import PBBDataset
 
 from src import UNet
 
@@ -20,10 +20,9 @@ def main():
     classes = 4  # exclude background
     weights_path = "/content/drive/MyDrive/save_weights_thesis/best_model.pth"
     img_path = "/content/unet/Dataset_PDB/test/CMAP/1PZ7_A_origin.png"
-    #roi_mask_path = "./DRIVE/test/mask/01_test_mask.gif"
     assert os.path.exists(weights_path), f"weights {weights_path} not found."
     assert os.path.exists(img_path), f"image {img_path} not found."
-    #assert os.path.exists(roi_mask_path), f"image {roi_mask_path} not found."
+
 
     mean = (0.709, 0.381, 0.224)
     std = (0.127, 0.079, 0.043)
@@ -33,7 +32,7 @@ def main():
     print("using {} device.".format(device))
 
 
-    val_dataset = DriveDataset(args.data_path,
+    val_dataset = PDBDataset(args.data_path,
                                train=False,
                                transforms=get_transform(train=False, mean=mean, std=std))
     
@@ -80,8 +79,7 @@ def main():
 
         prediction = output['out'].argmax(1).squeeze(0)
         prediction = prediction.to("cpu").numpy().astype(np.uint8)
-        # 将前景对应的像素值改成255(白色)
-        
+
         color = [[0,0,0],[255,0,0], [0,255,0], [0,0,255], [255,255,255]]
         # red: helix, green: sheet, blue: anti-parallel, white: parallel
         color_mask = np.zeros((prediction.shape[0], prediction.shape[1], 3), dtype='uint8')
