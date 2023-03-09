@@ -46,7 +46,7 @@ class SegmentationPresetEval:
 
 def get_transform(train, mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)):
 
-    crop_size = 300
+    crop_size = 100
 
     if train:
         return SegmentationPresetTrain(base_size, crop_size, mean=mean, std=std)
